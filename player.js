@@ -5,7 +5,7 @@ const MOVE_RIGHT_KEYS_CODES = ["ArrowRight", "KeyD"];
 const ALL_MOVE_KEY_CODES = [...MOVE_UP_KEY_CODES, ...MOVE_DOWN_KEYS_CODES, ...MOVE_LEFT_KEYS_CODES, ...MOVE_RIGHT_KEYS_CODES];
 
 export class Player {
-  constructor(x, y, context, movementLimits) {
+  constructor(x, y, context, movementLimits, weapon=null) {
     this.radius = 15;
     this.velocity = 3;
 
@@ -37,6 +37,22 @@ export class Player {
     this.imageHeight = 60;
     this.isMoving = false;
     this.imageTick = 0;
+
+    this.currentWeapon = weapon;
+  }
+
+  setWeapon(weapon) {
+    this.currentWeapon = weapon;
+  }
+
+  shoot(targetX, targetY, context, projectiles) {
+    this.currentWeapon.onMouseDown(this, targetX, targetY, context, projectiles);
+  }
+
+  stopShooting() {
+    if (this.currentWeapon) {
+      this.currentWeapon.onMouseUp();
+    }
   }
 
   drawImg() {

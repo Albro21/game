@@ -1,7 +1,8 @@
 import { Player } from "./player.js";
-import { Projectile } from "./projectile.js";
 import { Enemy } from "./enemy.js";
 import { distanceBetweenTwoPoints } from "./utilities.js";
+import { Weapon } from "./weapon.js";
+import { UpgradeSystem } from './upgradeSystem.js';
 
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
@@ -12,7 +13,9 @@ const scoreEl = document.querySelector('#score');
 const wastedElement = document.querySelector('.wasted');
 
 let player;
-let projectiles = [];
+let upgradeSystem;
+let weapon = new Weapon(500, 1);
+const projectiles = [];
 let enemies = [];
 let particles = [];
 let score = 0;
@@ -28,7 +31,6 @@ function startGame() {
   spawnEnemies();
 }
 
-
 function init() {
   const movementLimits = {
     minX: 0,
@@ -36,21 +38,33 @@ function init() {
     minY: 0,
     maxY: canvas.height,
   };
-  player = new Player(canvas.width / 2, canvas.height / 2, context, movementLimits);
-  addEventListener("click", createProjectile);
-}
 
-function createProjectile(event) {
-  projectiles.push(
-    new Projectile(
-      player.x,
-      player.y,
-      event.clientX,
-      event.clientY,
-      context
-    )
+  player = new Player(canvas.width / 2, canvas.height / 2, context, movementLimits, weapon);
+
+  window.addEventListener("mousedown", () => {
+    player.shoot(null, null, context, projectiles);
+  });
+
+  window.addEventListener("mouseup", () => {
+    player.stopShooting();
+  });
+
+  window.addEventListener("mouseleave", () => {
+    player.stopShooting();
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    player.cursorPosition.x = e.clientX;
+    player.cursorPosition.y = e.clientY;
+  });
+
+  upgradeSystem = new UpgradeSystem(
+    weapon,
+    player,
+    animate,
+    spawnEnemies
   );
-};
+}
 
 function spawnEnemies() {
   let countOfSpawnEnemies = 1;
@@ -72,7 +86,7 @@ function animate() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   particles = particles.filter(particle => particle.alpha > 0);
-  projectiles = projectiles.filter(projectileInsideWindow);
+  projectiles.splice(0, projectiles.length, ...projectiles.filter(projectileInsideWindow));
   enemies.forEach(enemy => checkHittingEnemy(enemy));
   enemies = enemies.filter(enemy => enemy.health > 0);
   const isGameOver = enemies.some(checkHittingPlayer);
@@ -125,4 +139,9 @@ function removeProjectileByIndex(index) {
 function increaseScore() {
   score += 250;
   scoreEl.innerHTML = score;
+
+  if (upgradeSystem.checkForUpgrade(score)) {
+    cancelAnimationFrame(animationId);
+    clearInterval(spawnIntervalId);
+  }
 }
