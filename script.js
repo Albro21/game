@@ -145,6 +145,14 @@ function increaseScore() {
   score += 250;
   scoreEl.innerHTML = score;
 
+  const progressEl = document.getElementById('score-progress');
+  const progress = score - upgradeSystem.previousUpgradeAt;
+  const needed = upgradeSystem.nextUpgradeAt - upgradeSystem.previousUpgradeAt;
+  const percent = Math.min((progress / needed) * 100, 100);
+
+  progressEl.style.width = `${percent}%`;
+  progressEl.textContent = `${Math.floor(percent)}%`;
+
   if (upgradeSystem.checkForUpgrade(score)) {
     cancelAnimationFrame(animationId);
     clearInterval(spawnIntervalId);

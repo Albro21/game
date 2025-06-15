@@ -17,6 +17,7 @@ export class UpgradeSystem {
         this.spawnEnemiesCallback = spawnEnemiesCallback;
 
         this.nextUpgradeAt = 5000;
+        this.previousUpgradeAt = 0;
 
         this.overlay = document.getElementById('upgrade-overlay');
         this.overlay.querySelectorAll('button').forEach(btn => {
@@ -65,6 +66,7 @@ export class UpgradeSystem {
 
     checkForUpgrade(score) {
         if (score >= this.nextUpgradeAt) {
+            this.previousUpgradeAt = this.nextUpgradeAt;
             this.nextUpgradeAt *= 1.75;
             this.showOverlay();
             return true;
