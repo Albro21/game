@@ -39,6 +39,9 @@ export class Player {
     this.imageTick = 0;
 
     this.weapon = weapon;
+
+    this.maxHealth = 100;
+    this.currentHealth = 100;
   }
 
   setWeapon(weapon) {
@@ -81,6 +84,23 @@ export class Player {
       this.imageHeight);
   }
 
+  drawHealthBar() {
+    const barWidth = 50;
+    const barHeight = 6;
+    const x = this.x - barWidth / 2;
+    const y = this.y - this.imageHeight / 2 - 10;
+
+    this.context.fillStyle = 'gray';
+    this.context.fillRect(x, y, barWidth, barHeight);
+
+    const healthWidth = (this.currentHealth / this.maxHealth) * barWidth;
+    this.context.fillStyle = 'limegreen';
+    this.context.fillRect(x, y, healthWidth, barHeight);
+
+    this.context.strokeStyle = 'black';
+    this.context.strokeRect(x, y, barWidth, barHeight);
+  }
+
   draw() {
     this.context.save();
     let angle = Math.atan2(this.cursorPosition.y - this.y, this.cursorPosition.x - this.x);
@@ -89,6 +109,8 @@ export class Player {
     this.context.translate(-this.x, -this.y);
     this.drawImg();
     this.context.restore();
+
+    this.drawHealthBar();
   }
 
   update() {

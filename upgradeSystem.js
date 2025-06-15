@@ -82,8 +82,8 @@ export class UpgradeSystem {
             this.weapon.damage += 1;
             this.damageStat.innerText = this.weapon.damage;
         } else if (type === 'heal') {
-            this.player.health = Math.min(this.player.maxHealth || 10, (this.player.health || 5) + 2);
-            this.healthStat.innerText = this.player.health;
+            this.player.currentHealth = this.player.maxHealth;
+            this.healthStat.innerText = this.player.currentHealth;
         } else if (type === 'movementSpeed') {
             this.player.velocity *= 2;
         } else if (type === 'shotgun') {

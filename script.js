@@ -89,13 +89,7 @@ function animate() {
   projectiles.splice(0, projectiles.length, ...projectiles.filter(projectileInsideWindow));
   enemies.forEach(enemy => checkHittingEnemy(enemy));
   enemies = enemies.filter(enemy => enemy.health > 0);
-  const isGameOver = enemies.some(checkHittingPlayer);
-  if (isGameOver) {
-    wastedElement.style.display = "block";
-    clearInterval(countIntervalId);
-    clearInterval(spawnIntervalId);
-    cancelAnimationFrame(animationId);
-  }
+  enemies.forEach((enemy, index) => checkHittingPlayer(enemy, index));
 
   particles.forEach(particle => particle.update());
   projectiles.forEach(projectile => projectile.update());
@@ -110,9 +104,23 @@ function projectileInsideWindow(projectile) {
     projectile.y - projectile.radius < canvas.height
 }
 
-function checkHittingPlayer(enemy) {
+function checkHittingPlayer(enemy, index) {
   const distance = distanceBetweenTwoPoints(player.x, player.y, enemy.x, enemy.y);
-  return distance - enemy.radius - player.radius < 0;
+  const isColliding = distance - enemy.radius - player.radius < 0;
+
+  if (isColliding) {
+    player.currentHealth -= 25;
+    enemies.splice(index, 1);
+
+    if (player.currentHealth <= 0) {
+      wastedElement.style.display = "block";
+      clearInterval(countIntervalId);
+      clearInterval(spawnIntervalId);
+      cancelAnimationFrame(animationId);
+    }
+  }
+
+  return false;
 }
 
 function checkHittingEnemy(enemy) {
