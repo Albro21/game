@@ -23,13 +23,13 @@ let animationId;
 let countIntervalId;
 let spawnIntervalId;
 
-startGame();
-
-function startGame() {
+const startBtn = document.getElementById('start-btn');
+startBtn.addEventListener('click', () => {
+  startBtn.classList.add('d-none');
   init();
   animate();
   spawnEnemies();
-}
+});
 
 function init() {
   const movementLimits = {
