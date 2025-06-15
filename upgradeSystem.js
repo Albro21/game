@@ -2,11 +2,13 @@ import { ShotgunWeapon } from "./weapon.js";
 
 const upgrades = {
     fireRate: '🔥 Double Fire Rate',
-    damage: '💥 1.5× More Damage',
+    damage: '💥 1.5X More Damage',
     heal: '💖 Restore Health',
     movementSpeed: '🏃 Double Movement Speed',
     shotgun: '🔫 Shotgun Mode: 6 Bullets, 1s Fire Rate',
     penetration: '🛡️ Bullets Penetrate +1 Enemy',
+    regen: '🌱 Regen +1',
+    maxHealth: '❤️ 1.5X Max Health',
 };
 
 export class UpgradeSystem {
@@ -31,8 +33,12 @@ export class UpgradeSystem {
         });
 
         this.healthStat = document.getElementById('healthStat');
+        this.maxHealthStat = document.getElementById('maxHealthStat');
+        this.regenStat = document.getElementById('regenStat');
         this.fireRateStat = document.getElementById('fireRateStat');
         this.damageStat = document.getElementById('damageStat');
+        this.movementSpeedStat = document.getElementById('movementSpeedStat');
+        this.penetrationStat = document.getElementById('penetrationStat');
 
         this.setRandomUpgrades();
     }
@@ -86,9 +92,10 @@ export class UpgradeSystem {
             this.healthStat.innerText = this.player.currentHealth;
         } else if (type === 'movementSpeed') {
             this.player.velocity *= 2;
+            this.movementSpeedStat.innerText = this.player.velocity;
         } else if (type === 'shotgun') {
             this.weapon.onMouseUp();
-            this.weapon = new ShotgunWeapon();
+            this.weapon = new ShotgunWeapon(1000, 1, max(1, this.weapon.penetrate));
             this.player.setWeapon(this.weapon);
             this.fireRateStat.innerText = this.weapon.fireRate;
             this.damageStat.innerText = this.weapon.damage;
@@ -96,6 +103,13 @@ export class UpgradeSystem {
         } else if (type === 'penetration') {
             this.weapon.penetrate += 1;
             this.player.setWeapon(this.weapon);
+            this.penetrationStat.innerText = this.weapon.penetrate;
+        } else if (type === 'regen') {
+            this.player.regen += 1;
+            this.regenStat.innerText = this.player.regen;
+        } else if (type === 'maxHealth') {
+            this.player.maxHealth *= 1.5;
+            this.maxHealthStat.innerText = this.player.maxHealth;
         }
     }
 }

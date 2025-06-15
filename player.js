@@ -42,6 +42,10 @@ export class Player {
 
     this.maxHealth = 100;
     this.currentHealth = 100;
+
+    this.regen = 0;
+    this._lastRegenTime = 0;
+    this.healthStat = document.getElementById('healthStat');
   }
 
   setWeapon(weapon) {
@@ -113,11 +117,23 @@ export class Player {
     this.drawHealthBar();
   }
 
+  regenerateHealth(currentTime = performance.now()) {
+    if (this.regen > 0) {
+      const deltaTime = (currentTime - this._lastRegenTime) / 1000;
+      if (deltaTime >= 1) {
+        this.currentHealth = Math.min(this.maxHealth, this.currentHealth + this.regen);
+        this._lastRegenTime = currentTime;
+      }
+    }
+  }
+
   update() {
     this.draw();
     this.isMoving = this.shouldMove(ALL_MOVE_KEY_CODES);
     this.updatePosition();
     this.checkPositionLimitAndUpdate();
+    this.regenerateHealth();
+    this.healthStat.innerText = this.currentHealth;
   }
 
   updatePosition() {
