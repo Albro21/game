@@ -38,20 +38,20 @@ export class Player {
     this.isMoving = false;
     this.imageTick = 0;
 
-    this.currentWeapon = weapon;
+    this.weapon = weapon;
   }
 
   setWeapon(weapon) {
-    this.currentWeapon = weapon;
+    this.weapon = weapon;
   }
 
   shoot(targetX, targetY, context, projectiles) {
-    this.currentWeapon.onMouseDown(this, targetX, targetY, context, projectiles);
+    this.weapon.onMouseDown(this, targetX, targetY, context, projectiles);
   }
 
   stopShooting() {
-    if (this.currentWeapon) {
-      this.currentWeapon.onMouseUp();
+    if (this.weapon) {
+      this.weapon.onMouseUp();
     }
   }
 

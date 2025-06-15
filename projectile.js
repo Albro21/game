@@ -11,6 +11,7 @@ export class Projectile {
       x: cosBetweenTwoPoints(targetX, targetY, x, y) * 15,
       y: sinBetweenTwoPoints(targetX, targetY, x, y) * 15,
     };;
+    this.enemiesPenetrated = 0;
   }
 
   draw() {

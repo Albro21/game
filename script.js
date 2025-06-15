@@ -120,12 +120,17 @@ function checkHittingEnemy(enemy) {
     const distance = distanceBetweenTwoPoints(projectile.x, projectile.y, enemy.x, enemy.y);
     if (distance - enemy.radius - projectile.radius > 0) return false;
 
-    removeProjectileByIndex(index);
-    enemy.health--;
+    enemy.health -= player.weapon.damage;
 
     if (enemy.health < 1) {
       increaseScore();
       enemy.createExplosion(particles);
+    }
+
+    if (projectile.enemiesPenetrated < player.weapon.penetrate) {
+      projectile.enemiesPenetrated++;
+    } else {
+      removeProjectileByIndex(index);
     }
 
     return true;
