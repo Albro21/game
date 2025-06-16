@@ -11,7 +11,9 @@ export class Projectile {
       x: cosBetweenTwoPoints(targetX, targetY, x, y) * 15,
       y: sinBetweenTwoPoints(targetX, targetY, x, y) * 15,
     };;
+
     this.enemiesPenetrated = 0;
+    this.hitEnemies = new Set();
   }
 
   draw() {
@@ -29,7 +31,6 @@ export class Projectile {
 
   split(projectilesArray) {
     const angleOffset = Math.PI / 2;
-
     const angle = Math.atan2(this.velocity.y, this.velocity.x);
 
     for (const offset of [-angleOffset, angleOffset]) {
@@ -50,6 +51,7 @@ export class Projectile {
       );
 
       newProjectile.velocity = newVelocity;
+      newProjectile.hitEnemies = new Set(this.hitEnemies);
       projectilesArray.push(newProjectile);
     }
   }

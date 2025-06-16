@@ -139,8 +139,12 @@ function checkHittingPlayer(enemy, index) {
 
 function checkHittingEnemy(enemy) {
   projectiles.some((projectile, index) => {
+    if (projectile.hitEnemies.has(enemy)) return false;
+
     const distance = distanceBetweenTwoPoints(projectile.x, projectile.y, enemy.x, enemy.y);
     if (distance - enemy.radius - projectile.radius > 0) return false;
+
+    projectile.hitEnemies.add(enemy);
 
     const damageSound = new Audio('./sounds/damage.mp3');
     damageSound.play();
@@ -155,13 +159,9 @@ function checkHittingEnemy(enemy) {
       const deathSound = new Audio('./sounds/death.mp3');
       deathSound.play();
 
-      if (enemy.type == 'enemy_1') {
-        score += 100;
-      } else if (enemy.type == 'enemy_3') {
-        score += 300;
-      } else if (enemy.type == 'enemy_5') {
-        score += 500;
-      }
+      if (enemy.type === 'enemy_1') score += 100;
+      else if (enemy.type === 'enemy_3') score += 300;
+      else if (enemy.type === 'enemy_5') score += 500;
 
       increaseScore(score);
       enemy.createExplosion(particles);
