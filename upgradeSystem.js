@@ -18,7 +18,7 @@ export class UpgradeSystem {
         this.animateCallback = animateCallback;
         this.spawnEnemiesCallback = spawnEnemiesCallback;
 
-        this.nextUpgradeAt = 4000;
+        this.nextUpgradeAt = 3000;
         this.previousUpgradeAt = 0;
 
         this.overlay = document.getElementById('upgrade-overlay');
@@ -76,7 +76,7 @@ export class UpgradeSystem {
     checkForUpgrade(score) {
         if (score >= this.nextUpgradeAt) {
             this.previousUpgradeAt = this.nextUpgradeAt;
-            this.nextUpgradeAt = this.nextUpgradeAt + Math.min(this.nextUpgradeAt * 1.75, 15000);
+            this.nextUpgradeAt = this.nextUpgradeAt + Math.min(this.nextUpgradeAt * 1.5, 10000);
             this.showOverlay();
             return true;
         }

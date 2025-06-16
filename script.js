@@ -74,12 +74,22 @@ function init() {
 }
 
 function spawnEnemies() {
-  let countOfSpawnEnemies = 1;
+  let baseCount = 1;
+  let countOfSpawnEnemies = baseCount;
 
   countIntervalId = setInterval(() => countOfSpawnEnemies++, 30000);
-  spawnIntervalId = setInterval(() => spawnCountEnemies(countOfSpawnEnemies), 1000);
 
-  spawnCountEnemies(countOfSpawnEnemies)
+  if (spawnIntervalId) clearInterval(spawnIntervalId);
+
+  let spawnIntervalDuration = 1000 - (hardnessConstant / 100) * 900;s
+  spawnIntervalDuration = Math.max(spawnIntervalDuration, 100);
+  console.log(spawnIntervalDuration);
+
+  spawnIntervalId = setInterval(() => {
+    spawnCountEnemies(countOfSpawnEnemies);
+  }, spawnIntervalDuration);
+
+  spawnCountEnemies(countOfSpawnEnemies);
 }
 
 function spawnCountEnemies(count) {
