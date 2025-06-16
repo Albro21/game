@@ -59,7 +59,6 @@ function init() {
   });
 
   upgradeSystem = new UpgradeSystem(
-    weapon,
     player,
     animate,
     spawnEnemies
@@ -129,6 +128,10 @@ function checkHittingEnemy(enemy) {
     if (distance - enemy.radius - projectile.radius > 0) return false;
 
     enemy.health -= player.weapon.damage;
+
+    if (player.weapon.split) {
+      projectile.split(projectiles);
+    }
 
     if (enemy.health < 1) {
       increaseScore();

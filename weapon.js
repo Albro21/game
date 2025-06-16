@@ -1,17 +1,18 @@
 import { Projectile } from "./projectile.js";
 
 class Weapon {
-    constructor(fireRate = 500, damage = 1, penetrate = 0) {
+    constructor(fireRate = 500, damage = 1, penetrate = 0, split = false) {
         this.fireRate = fireRate;
         this.damage = damage;
         this.penetrate = penetrate;
+        this.split = split;
 
         this.holdInterval = null;
         this.canShoot = true;
     }
 
     fire(player, targetX, targetY, context, projectiles) {
-        projectiles.push(new Projectile(player.x, player.y, targetX, targetY, context));
+        projectiles.push(new Projectile(player.x, player.y, targetX, targetY, context, this.split));
     }
 
     shoot(player, targetX, targetY, context, projectiles) {
@@ -52,7 +53,7 @@ class ShotgunWeapon extends Weapon {
 
     fire(player, targetX, targetY, context, projectiles) {
         const angle = Math.atan2(targetY - player.y, targetX - player.x);
-        const spread = 0.25;
+        const spread = 0.5;
         const pellets = 6;
 
         for (let i = 0; i < pellets; i++) {

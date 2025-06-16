@@ -9,11 +9,11 @@ const upgrades = {
     penetration: '🛡️ Bullets Penetrate +1 Enemy',
     regen: '🌱 Regen +1',
     maxHealth: '❤️ 1.5X Max Health',
+    split: '👫 Bullets split on hit'
 };
 
 export class UpgradeSystem {
-    constructor(weapon, player, animateCallback, spawnEnemiesCallback) {
-        this.weapon = weapon;
+    constructor(player, animateCallback, spawnEnemiesCallback) {
         this.player = player;
         this.animateCallback = animateCallback;
         this.spawnEnemiesCallback = spawnEnemiesCallback;
@@ -73,7 +73,7 @@ export class UpgradeSystem {
     checkForUpgrade(score) {
         if (score >= this.nextUpgradeAt) {
             this.previousUpgradeAt = this.nextUpgradeAt;
-            this.nextUpgradeAt *= 1.75;
+            this.nextUpgradeAt = this.nextUpgradeAt + Math.min(this.nextUpgradeAt * 1.75, 15000);
             this.showOverlay();
             return true;
         }
@@ -82,11 +82,11 @@ export class UpgradeSystem {
 
     applyUpgrade(type) {
         if (type === 'fireRate') {
-            this.weapon.fireRate = Math.max(1, this.weapon.fireRate * 0.5);
-            this.fireRateStat.innerText = this.weapon.fireRate;
+            this.player.weapon.fireRate = Math.max(1, this.player.weapon.fireRate * 0.5);
+            this.fireRateStat.innerText = this.player.weapon.fireRate;
         } else if (type === 'damage') {
-            this.weapon.damage += 1;
-            this.damageStat.innerText = this.weapon.damage;
+            this.player.weapon.damage += 1;
+            this.damageStat.innerText = this.player.weapon.damage;
         } else if (type === 'heal') {
             this.player.currentHealth = this.player.maxHealth;
             this.healthStat.innerText = this.player.currentHealth;
@@ -94,22 +94,23 @@ export class UpgradeSystem {
             this.player.velocity *= 2;
             this.movementSpeedStat.innerText = this.player.velocity;
         } else if (type === 'shotgun') {
-            this.weapon.onMouseUp();
-            this.weapon = new ShotgunWeapon(1000, 1, max(1, this.weapon.penetrate));
-            this.player.setWeapon(this.weapon);
-            this.fireRateStat.innerText = this.weapon.fireRate;
-            this.damageStat.innerText = this.weapon.damage;
+            this.player.weapon.onMouseUp();
+            this.player.weapon = new ShotgunWeapon(1000, 1, Math.max(1, this.player.weapon.penetrate), this.player.weapon.split);
+            this.fireRateStat.innerText = this.player.weapon.fireRate;
+            this.damageStat.innerText = this.player.weapon.damage;
             delete upgrades['shotgun'];
         } else if (type === 'penetration') {
-            this.weapon.penetrate += 1;
-            this.player.setWeapon(this.weapon);
-            this.penetrationStat.innerText = this.weapon.penetrate;
+            this.player.weapon.penetrate += 1;
+            this.penetrationStat.innerText = this.player.weapon.penetrate;
         } else if (type === 'regen') {
             this.player.regen += 1;
             this.regenStat.innerText = this.player.regen;
         } else if (type === 'maxHealth') {
             this.player.maxHealth *= 1.5;
             this.maxHealthStat.innerText = this.player.maxHealth;
+        } else if (type === 'split') {
+            this.player.weapon.split = true;
+            delete upgrades['split'];
         }
     }
 }
