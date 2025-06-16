@@ -12,6 +12,9 @@ class Weapon {
     }
 
     fire(player, targetX, targetY, context, projectiles) {
+        const shootSound = new Audio('./sounds/shoot.mp3');
+        shootSound.play();
+
         projectiles.push(new Projectile(player.x, player.y, targetX, targetY, context, this.split));
     }
 
@@ -52,6 +55,9 @@ class ShotgunWeapon extends Weapon {
     }
 
     fire(player, targetX, targetY, context, projectiles) {
+        const shootSound = new Audio('./sounds/shoot.mp3');
+        shootSound.play();
+        
         const angle = Math.atan2(targetY - player.y, targetX - player.x);
         const spread = 0.5;
         const pellets = 6;

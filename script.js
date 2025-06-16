@@ -9,8 +9,8 @@ const context = canvas.getContext('2d');
 canvas.width = document.documentElement.clientWidth;
 canvas.height = document.documentElement.clientHeight;
 
-const scoreEl = document.querySelector('#score');
-const wastedElement = document.querySelector('.wasted');
+const scoreEl = document.getElementById('score');
+const gameOverScreen = document.getElementById('game-over-screen');
 
 let player;
 let upgradeSystem;
@@ -32,6 +32,11 @@ startBtn.addEventListener('click', () => {
   init();
   animate();
   spawnEnemies();
+
+  const bgMusic = new Audio('./sounds/bg.mp3');
+  bgMusic.loop = true;
+  bgMusic.volume = 0.3;
+  bgMusic.play(); 
 });
 
 function init() {
@@ -111,11 +116,18 @@ function checkHittingPlayer(enemy, index) {
   const isColliding = distance - enemy.radius - player.radius < 0;
 
   if (isColliding) {
+
+    const damageSound = new Audio('./sounds/damage.mp3');
+    damageSound.play();
+
     player.currentHealth -= 25;
     enemies.splice(index, 1);
 
     if (player.currentHealth <= 0) {
-      wastedElement.style.display = "block";
+      const deathSound = new Audio('./sounds/death.mp3');
+      deathSound.play();
+
+      gameOverScreen.classList.replace('d-none', 'd-flex');
       clearInterval(countIntervalId);
       clearInterval(spawnIntervalId);
       cancelAnimationFrame(animationId);
@@ -130,13 +142,19 @@ function checkHittingEnemy(enemy) {
     const distance = distanceBetweenTwoPoints(projectile.x, projectile.y, enemy.x, enemy.y);
     if (distance - enemy.radius - projectile.radius > 0) return false;
 
+    const damageSound = new Audio('./sounds/damage.mp3');
+    damageSound.play();
+
     enemy.health -= player.weapon.damage;
 
     if (player.weapon.split) {
       projectile.split(projectiles);
     }
 
-    if (enemy.health < 1) {
+    if (enemy.health <= 0) {
+      const deathSound = new Audio('./sounds/death.mp3');
+      deathSound.play();
+
       if (enemy.type == 'enemy_1') {
         score += 100;
       } else if (enemy.type == 'enemy_3') {

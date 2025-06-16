@@ -18,12 +18,15 @@ export class UpgradeSystem {
         this.animateCallback = animateCallback;
         this.spawnEnemiesCallback = spawnEnemiesCallback;
 
-        this.nextUpgradeAt = 5000;
+        this.nextUpgradeAt = 4000;
         this.previousUpgradeAt = 0;
 
         this.overlay = document.getElementById('upgrade-overlay');
         this.overlay.querySelectorAll('button').forEach(btn => {
             btn.addEventListener('click', () => {
+                const selectSound = new Audio('./sounds/select.mp3');
+                selectSound.play();
+
                 this.applyUpgrade(btn.dataset.upgrade);
                 this.hideOverlay();
                 this.animateCallback();
