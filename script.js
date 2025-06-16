@@ -23,6 +23,9 @@ let animationId;
 let countIntervalId;
 let spawnIntervalId;
 
+let hardnessConstant = 0;
+const hardnessStat = document.getElementById('hardnessStat');
+
 const startBtn = document.getElementById('start-btn');
 startBtn.addEventListener('click', () => {
   startBtn.classList.add('d-none');
@@ -76,7 +79,7 @@ function spawnEnemies() {
 
 function spawnCountEnemies(count) {
   for (let i = 0; i < count; i++) {
-    enemies.push(new Enemy(canvas.width, canvas.height, context, player));
+    enemies.push(new Enemy(canvas.width, canvas.height, context, player, hardnessConstant));
   }
 }
 
@@ -167,5 +170,7 @@ function increaseScore() {
   if (upgradeSystem.checkForUpgrade(score)) {
     cancelAnimationFrame(animationId);
     clearInterval(spawnIntervalId);
+    hardnessConstant = Math.min(1, hardnessConstant + 0.1);
+    hardnessStat.textContent = Math.round(hardnessConstant * 100);
   }
 }

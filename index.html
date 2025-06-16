@@ -16,10 +16,6 @@
 
 <body>
 	<img src="./img/wasted.png" class="wasted">
-	<div class="score-wrap">
-		<span>Score: </span>
-		<span id="score">0</span>
-	</div>
 	<div class="bg-wrap">
 		<div class="left-bg"></div>
 		<div class="center-bg"></div>
@@ -29,14 +25,15 @@
 	<div id="ui" style="position: fixed; top: 0; left: 0; z-index: 1; height: 100vh; width: 100vw;">
 
 		<!-- Progress Bar -->
-		<div class="d-flex justify-content-center w-100" style="position: absolute; top: 30px;">
-			<div class="progress shadow border" role="progressbar" 
+		<div class="d-flex flex-column align-items-center justify-content-center w-100 gap-3" style="position: absolute; top: 30px;">
+			<div class="progress shadow border border-warning" role="progressbar" 
 				aria-valuenow="0" 
 				aria-valuemin="0" 
 				aria-valuemax="5000"
 				style="width: 40%; height: 30px;">
 				<div id="score-progress" class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 0%">0%</div>
 			</div>
+			<h3 class="text-warning">Score:<span id="score">0</span></h3>
 		</div>
 
 		<!-- Start Game Button -->
@@ -62,13 +59,13 @@
 		
 		<!-- Stats -->
 		<div class="d-flex flex-column rounded bg-light p-2" id="stats" style="position: absolute; top: 20px; right: 20px;">
-			<div>Health: <span id="healthStat">100</span></div>
-			<div>MAX Health: <span id="maxHealthStat">100</span></div>
+			<div>Health: <span id="healthStat">100</span>/<span id="maxHealthStat">100</span></div>
 			<div>Regen: <span id="regenStat">0</span></div>
 			<div>Fire Rate: <span id="fireRateStat">500</span></div>
 			<div>Damage: <span id="damageStat">1</span></div>
 			<div>Movement Speed: <span id="movementSpeedStat">3</span></div>
 			<div>Penetration: <span id="penetrationStat">0</span></div>
+			<div class="text-danger">Hardness: <span id="hardnessStat">0</span>%</div>
 		</div>
 	</div>
 </body>

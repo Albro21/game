@@ -85,7 +85,7 @@ export class UpgradeSystem {
             this.player.weapon.fireRate = Math.max(1, this.player.weapon.fireRate * 0.5);
             this.fireRateStat.innerText = this.player.weapon.fireRate;
         } else if (type === 'damage') {
-            this.player.weapon.damage += 1;
+            this.player.weapon.damage *= 1.5;
             this.damageStat.innerText = this.player.weapon.damage;
         } else if (type === 'heal') {
             this.player.currentHealth = this.player.maxHealth;
@@ -100,6 +100,7 @@ export class UpgradeSystem {
             this.player.weapon = new ShotgunWeapon(1000, 1, penetrate, split);
             this.fireRateStat.innerText = this.player.weapon.fireRate;
             this.damageStat.innerText = this.player.weapon.damage;
+            this.penetrationStat.innerText = this.player.weapon.penetrate;
             delete upgrades['shotgun'];
         } else if (type === 'penetration') {
             this.player.weapon.penetrate += 1;
