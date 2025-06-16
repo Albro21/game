@@ -57,6 +57,10 @@ export class Enemy {
     this.imageTick = 0;
     this.health = enemyData.health;
     this.maxHealth = this.health;
+
+    const minSpeed = 2;
+    const maxSpeed = 3.5;
+    this.speed = minSpeed + hardnessConstant * (maxSpeed - minSpeed);
   }
 
   drawHealthBar() {
@@ -76,6 +80,7 @@ export class Enemy {
 
     this.context.strokeStyle = 'black';
     this.context.strokeRect(x, y, barWidth, barHeight);
+    
   }
 
 
@@ -113,8 +118,8 @@ export class Enemy {
   update() {
     this.draw();
     this.velocity = {
-      x: cosBetweenTwoPoints(this.player.x, this.player.y, this.x, this.y) * 2,
-      y: sinBetweenTwoPoints(this.player.x, this.player.y, this.x, this.y) * 2,
+      x: cosBetweenTwoPoints(this.player.x, this.player.y, this.x, this.y) * this.speed,
+      y: sinBetweenTwoPoints(this.player.x, this.player.y, this.x, this.y) * this.speed,
     };
     this.x += this.velocity.x;
     this.y += this.velocity.y;
