@@ -137,7 +137,15 @@ function checkHittingEnemy(enemy) {
     }
 
     if (enemy.health < 1) {
-      increaseScore();
+      if (enemy.type == 'enemy_1') {
+        score += 100;
+      } else if (enemy.type == 'enemy_3') {
+        score += 300;
+      } else if (enemy.type == 'enemy_5') {
+        score += 500;
+      }
+
+      increaseScore(score);
       enemy.createExplosion(particles);
     }
 
@@ -155,8 +163,7 @@ function removeProjectileByIndex(index) {
   projectiles.splice(index, 1);
 }
 
-function increaseScore() {
-  score += 250;
+function increaseScore(score = 0) {
   scoreEl.innerHTML = score;
 
   const progressEl = document.getElementById('score-progress');

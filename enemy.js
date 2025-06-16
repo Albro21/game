@@ -48,6 +48,7 @@ export class Enemy {
     }
 
     const enemyData = enemies[chosenType];
+    this.type = chosenType;
     this.image = new Image();
     this.image.src = enemyData.imageSrc;
     this.imageWidth = 50;
