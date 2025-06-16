@@ -1,7 +1,7 @@
 import { cosBetweenTwoPoints, sinBetweenTwoPoints } from "./utilities.js";
 
 export class Projectile {
-  constructor(x, y, targetX, targetY, context, split) {
+  constructor(x, y, targetX, targetY, context, aimAssist = false) {
     this.x = x;
     this.y = y;
     this.context = context;
@@ -14,6 +14,8 @@ export class Projectile {
 
     this.enemiesPenetrated = 0;
     this.hitEnemies = new Set();
+
+    this.aimAssist = aimAssist;
   }
 
   draw() {
@@ -23,7 +25,29 @@ export class Projectile {
     this.context.fill();
   }
 
-  update() {
+  update(enemies = []) {
+    if (this.aimAssist && enemies?.length) {
+      const nearest = this.getNearestEnemy(enemies, 150);
+      if (nearest) {
+        const dx = nearest.x - this.x;
+        const dy = nearest.y - this.y;
+        const angleToEnemy = Math.atan2(dy, dx);
+
+        const currentAngle = Math.atan2(this.velocity.y, this.velocity.x);
+        let angleDiff = angleToEnemy - currentAngle;
+
+        if (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
+        if (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
+
+        const maxCurve = 0.3;
+        const adjustedAngle = currentAngle + Math.sign(angleDiff) * Math.min(Math.abs(angleDiff), maxCurve);
+
+        const speed = Math.sqrt(this.velocity.x ** 2 + this.velocity.y ** 2);
+        this.velocity.x = Math.cos(adjustedAngle) * speed;
+        this.velocity.y = Math.sin(adjustedAngle) * speed;
+      }
+    }
+
     this.draw();
     this.x += this.velocity.x;
     this.y += this.velocity.y;
@@ -54,5 +78,23 @@ export class Projectile {
       newProjectile.hitEnemies = new Set(this.hitEnemies);
       projectilesArray.push(newProjectile);
     }
+  }
+
+  getNearestEnemy(enemies, maxRange = 100) {
+    let nearest = null;
+    let minDist = maxRange;
+
+    for (const enemy of enemies) {
+      const dx = enemy.x - this.x;
+      const dy = enemy.y - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < minDist && !this.hitEnemies.has(enemy)) {
+        minDist = dist;
+        nearest = enemy;
+      }
+    }
+
+    return nearest;
   }
 }

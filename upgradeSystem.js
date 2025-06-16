@@ -9,7 +9,8 @@ const upgrades = {
     penetration: '🛡️ Bullets Penetrate +1 Enemy',
     regen: '🌱 Regen +1',
     maxHealth: '❤️ 1.5X Max Health',
-    split: '👫 Bullets split on hit'
+    split: '👫 Bullets split on hit',
+    aimAssist: '🎯 Aim Assist'
 };
 
 export class UpgradeSystem {
@@ -100,7 +101,8 @@ export class UpgradeSystem {
             this.player.weapon.onMouseUp();
             const penetrate = Math.max(1, this.player.weapon.penetrate);
             const split = this.player.weapon.split;
-            this.player.weapon = new ShotgunWeapon(1000, 1, penetrate, split);
+            const aimAssist = this.player.weapon.aimAssist;
+            this.player.weapon = new ShotgunWeapon(1000, 1, penetrate, split, aimAssist);
             this.fireRateStat.innerText = this.player.weapon.fireRate;
             this.damageStat.innerText = this.player.weapon.damage;
             this.penetrationStat.innerText = this.player.weapon.penetrate;
@@ -117,6 +119,9 @@ export class UpgradeSystem {
         } else if (type === 'split') {
             this.player.weapon.split = true;
             delete upgrades['split'];
+        } else if (type === 'aimAssist') {
+            this.player.weapon.aimAssist = true;
+            delete upgrades['aimAssist'];
         }
     }
 }

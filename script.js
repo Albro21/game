@@ -14,7 +14,7 @@ const gameOverScreen = document.getElementById('game-over-screen');
 
 let player;
 let upgradeSystem;
-let weapon = new Weapon(500, 1);
+let weapon = new Weapon(500, 1, 0, false, false);
 const projectiles = [];
 let enemies = [];
 let particles = [];
@@ -81,7 +81,7 @@ function spawnEnemies() {
 
   if (spawnIntervalId) clearInterval(spawnIntervalId);
 
-  let spawnIntervalDuration = 1000 - (hardnessConstant / 100) * 900;s
+  let spawnIntervalDuration = 1000 - (hardnessConstant / 100) * 900;
   spawnIntervalDuration = Math.max(spawnIntervalDuration, 100);
   console.log(spawnIntervalDuration);
 
@@ -109,7 +109,7 @@ function animate() {
   enemies.forEach((enemy, index) => checkHittingPlayer(enemy, index));
 
   particles.forEach(particle => particle.update());
-  projectiles.forEach(projectile => projectile.update());
+  projectiles.forEach(projectile => projectile.update(enemies));
   player.update();
   enemies.forEach(enemy => enemy.update());
 }
