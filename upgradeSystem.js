@@ -95,7 +95,9 @@ export class UpgradeSystem {
             this.movementSpeedStat.innerText = this.player.velocity;
         } else if (type === 'shotgun') {
             this.player.weapon.onMouseUp();
-            this.player.weapon = new ShotgunWeapon(1000, 1, Math.max(1, this.player.weapon.penetrate), this.player.weapon.split);
+            const penetrate = Math.max(1, this.player.weapon.penetrate);
+            const split = this.player.weapon.split;
+            this.player.weapon = new ShotgunWeapon(1000, 1, penetrate, split);
             this.fireRateStat.innerText = this.player.weapon.fireRate;
             this.damageStat.innerText = this.player.weapon.damage;
             delete upgrades['shotgun'];

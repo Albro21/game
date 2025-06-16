@@ -47,8 +47,8 @@ class Weapon {
 }
 
 class ShotgunWeapon extends Weapon {
-    constructor() {
-        super(1000, 1, 1);
+    constructor(fireRate = 1000, damage = 1, penetrate = 1, split = false) {
+        super(fireRate, damage, penetrate, split);
     }
 
     fire(player, targetX, targetY, context, projectiles) {

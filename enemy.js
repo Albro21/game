@@ -17,13 +17,35 @@ export class Enemy {
     }
 
     const enemyType = Math.random() > 0.8 ? 2 : 1;
-    this.health = enemyType;
     this.image = new Image();
     this.image.src = `./img/enemy_${enemyType}.png`;
     this.imageWidth = 50;
     this.imageHeight = 60;
     this.imageTick = 0;
+
+    this.health = enemyType;
+    this.maxHealth = this.health;
   }
+
+  drawHealthBar() {
+    if (this.health >= this.maxHealth) return;
+
+    const barWidth = 40;
+    const barHeight = 5;
+    const x = this.x - barWidth / 2;
+    const y = this.y - this.imageHeight / 2 - 10;
+
+    this.context.fillStyle = 'gray';
+    this.context.fillRect(x, y, barWidth, barHeight);
+
+    const healthWidth = (this.health / this.maxHealth) * barWidth;
+    this.context.fillStyle = 'red';
+    this.context.fillRect(x, y, healthWidth, barHeight);
+
+    this.context.strokeStyle = 'black';
+    this.context.strokeRect(x, y, barWidth, barHeight);
+  }
+
 
   drawImg() {
     const imageTickLimit = 18;
@@ -53,6 +75,7 @@ export class Enemy {
     this.context.translate(-this.x, -this.y);
     this.drawImg()
     this.context.restore();
+    this.drawHealthBar();
   }
 
   update() {
