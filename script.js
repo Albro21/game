@@ -23,8 +23,8 @@ let animationId;
 let countIntervalId;
 let spawnIntervalId;
 
-let hardnessConstant = 0;
-const hardnessStat = document.getElementById('hardnessStat');
+let difficultyConstant = 0;
+const difficultyStat = document.getElementById('difficultyStat');
 
 const startBtn = document.getElementById('start-btn');
 startBtn.addEventListener('click', () => {
@@ -81,7 +81,7 @@ function spawnEnemies() {
 
   if (spawnIntervalId) clearInterval(spawnIntervalId);
 
-  let spawnIntervalDuration = 1000 - (hardnessConstant / 100) * 900;
+  let spawnIntervalDuration = 1000 - (difficultyConstant / 100) * 900;
   spawnIntervalDuration = Math.max(spawnIntervalDuration, 100);
   console.log(spawnIntervalDuration);
 
@@ -94,7 +94,7 @@ function spawnEnemies() {
 
 function spawnCountEnemies(count) {
   for (let i = 0; i < count; i++) {
-    enemies.push(new Enemy(canvas.width, canvas.height, context, player, hardnessConstant));
+    enemies.push(new Enemy(canvas.width, canvas.height, context, player, difficultyConstant));
   }
 }
 
@@ -205,7 +205,7 @@ function increaseScore(score = 0) {
   if (upgradeSystem.checkForUpgrade(score)) {
     cancelAnimationFrame(animationId);
     clearInterval(spawnIntervalId);
-    hardnessConstant = Math.min(1, hardnessConstant + 0.1);
-    hardnessStat.textContent = Math.round(hardnessConstant * 100);
+    difficultyConstant = Math.min(1, difficultyConstant + 0.1);
+    difficultyStat.textContent = Math.round(difficultyConstant * 100);
   }
 }

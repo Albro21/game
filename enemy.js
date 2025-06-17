@@ -17,7 +17,7 @@ const enemies = {
 };
 
 export class Enemy {
-  constructor(canvasWidth, canvasHeight, context, player, hardnessConstant = 0) {
+  constructor(canvasWidth, canvasHeight, context, player, difficultyConstant = 0) {
     this.context = context;
     this.player = player;
 
@@ -33,8 +33,8 @@ export class Enemy {
     const rand = Math.random();
 
     const thresholds = {
-      enemy_5: 0.9 - hardnessConstant * 0.5,
-      enemy_3: 0.6 - hardnessConstant * 0.3,
+      enemy_5: 0.9 - difficultyConstant * 0.5,
+      enemy_3: 0.6 - difficultyConstant * 0.3,
       enemy_1: 0,
     };
 
@@ -60,7 +60,7 @@ export class Enemy {
 
     const minSpeed = 2;
     const maxSpeed = 3.5;
-    this.speed = minSpeed + hardnessConstant * (maxSpeed - minSpeed);
+    this.speed = minSpeed + difficultyConstant * (maxSpeed - minSpeed);
   }
 
   drawHealthBar() {
