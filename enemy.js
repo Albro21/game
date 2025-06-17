@@ -6,37 +6,43 @@ const enemies = {
     imageSrc: "./img/enemy_1.png",
     health: 10,
     easySpawnRate: 60,
-    difficultSpawnRate: 2,
+    difficultSpawnRate: 1,
   },
   enemy_3: {
     imageSrc: "./img/enemy_3.png",
     health: 30,
     easySpawnRate: 20,
-    difficultSpawnRate: 3,
+    difficultSpawnRate: 1,
   },
   enemy_5: {
     imageSrc: "./img/enemy_5.png",
     health: 50,
     easySpawnRate: 10,
-    difficultSpawnRate: 5,
+    difficultSpawnRate: 3,
   },
   enemy_7: {
     imageSrc: "./img/enemy_7.png",
     health: 70,
     easySpawnRate: 5,
-    difficultSpawnRate: 10,
+    difficultSpawnRate: 5,
   },
   enemy_10: {
     imageSrc: "./img/enemy_10.png",
     health: 100,
     easySpawnRate: 3,
-    difficultSpawnRate: 20,
+    difficultSpawnRate: 10,
   },
   enemy_20: {
     imageSrc: "./img/enemy_20.png",
     health: 200,
-    easySpawnRate: 2,
-    difficultSpawnRate: 60,
+    easySpawnRate: 1,
+    difficultSpawnRate: 55,
+  },
+  enemy_50: {
+    imageSrc: "./img/boss.png",
+    health: 500,
+    easySpawnRate: 0.01,
+    difficultSpawnRate: 5,
   },
 };
 
@@ -81,15 +87,20 @@ export class Enemy {
     this.type = chosenType;
     this.image = new Image();
     this.image.src = enemyData.imageSrc;
-    this.imageWidth = 50;
-    this.imageHeight = 60;
+    if (this.type === "enemy_50") {
+      this.imageWidth = 100;
+      this.imageHeight = 120;
+    } else {
+      this.imageWidth = 50;
+      this.imageHeight = 60;
+    }
     this.radius = 15;
     this.imageTick = 0;
     this.health = enemyData.health;
     this.maxHealth = this.health;
 
     const minSpeed = 2;
-    const maxSpeed = 5;
+    const maxSpeed = 4;
     this.speed = minSpeed + difficultyConstant * (maxSpeed - minSpeed);
   }
 

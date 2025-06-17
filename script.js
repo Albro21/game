@@ -196,6 +196,7 @@ function checkHittingEnemy(enemy) {
       else if (enemy.type === 'enemy_7') score += 700;
       else if (enemy.type === 'enemy_10') score += 1000;
       else if (enemy.type === 'enemy_20') score += 2000;
+      else if (enemy.type === 'enemy_50') score += 5000;
 
       increaseScore(score);
       enemy.createExplosion(particles);
