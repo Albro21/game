@@ -2,13 +2,13 @@ import { ShotgunWeapon } from "./weapon.js";
 
 const upgrades = {
     fireRate: '🔥 Double Fire Rate',
-    damage: '💥 1.5X More Damage',
+    damage: '💥 2X More Damage',
     heal: '💖 Restore Health',
     movementSpeed: '🏃 Double Movement Speed',
     shotgun: '🔫 Shotgun Mode: 6 Bullets, 1s Fire Rate',
     penetration: '🛡️ Bullets Penetrate +1 Enemy',
     regen: '🌱 Regen +1',
-    maxHealth: '❤️ 1.5X Max Health',
+    maxHealth: '❤️ 2X Max Health',
     split: '👫 Bullets split on hit',
     aimAssist: '🎯 Aim Assist'
 };
@@ -19,7 +19,7 @@ export class UpgradeSystem {
         this.animateCallback = animateCallback;
         this.spawnEnemiesCallback = spawnEnemiesCallback;
 
-        this.nextUpgradeAt = 3000;
+        this.nextUpgradeAt = 3500;
         this.previousUpgradeAt = 0;
 
         this.overlay = document.getElementById('upgrade-overlay');
@@ -77,7 +77,7 @@ export class UpgradeSystem {
     checkForUpgrade(score) {
         if (score >= this.nextUpgradeAt) {
             this.previousUpgradeAt = this.nextUpgradeAt;
-            this.nextUpgradeAt = this.nextUpgradeAt + Math.min(this.nextUpgradeAt * 1.5, 10000);
+            this.nextUpgradeAt = this.nextUpgradeAt + this.nextUpgradeAt * 1.5;
             this.showOverlay();
             return true;
         }
@@ -89,7 +89,7 @@ export class UpgradeSystem {
             this.player.weapon.fireRate = Math.max(1, this.player.weapon.fireRate * 0.5);
             this.fireRateStat.innerText = this.player.weapon.fireRate;
         } else if (type === 'damage') {
-            this.player.weapon.damage *= 1.5;
+            this.player.weapon.damage *= 2;
             this.damageStat.innerText = this.player.weapon.damage;
         } else if (type === 'heal') {
             this.player.currentHealth = this.player.maxHealth;
@@ -114,7 +114,7 @@ export class UpgradeSystem {
             this.player.regen += 1;
             this.regenStat.innerText = this.player.regen;
         } else if (type === 'maxHealth') {
-            this.player.maxHealth *= 1.5;
+            this.player.maxHealth *= 2;
             this.maxHealthStat.innerText = this.player.maxHealth;
         } else if (type === 'split') {
             this.player.weapon.split = true;

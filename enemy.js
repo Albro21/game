@@ -4,15 +4,39 @@ import { sinBetweenTwoPoints, cosBetweenTwoPoints } from "./utilities.js";
 const enemies = {
   enemy_1: {
     imageSrc: "./img/enemy_1.png",
-    health: 1
+    health: 1,
+    easySpawnRate: 60,
+    difficultSpawnRate: 2,
   },
   enemy_3: {
     imageSrc: "./img/enemy_3.png",
-    health: 3
+    health: 3,
+    easySpawnRate: 20,
+    difficultSpawnRate: 3,
   },
   enemy_5: {
     imageSrc: "./img/enemy_5.png",
-    health: 5
+    health: 5,
+    easySpawnRate: 10,
+    difficultSpawnRate: 5,
+  },
+  enemy_7: {
+    imageSrc: "./img/enemy_7.png",
+    health: 7,
+    easySpawnRate: 5,
+    difficultSpawnRate: 10,
+  },
+  enemy_10: {
+    imageSrc: "./img/enemy_10.png",
+    health: 10,
+    easySpawnRate: 3,
+    difficultSpawnRate: 20,
+  },
+  enemy_20: {
+    imageSrc: "./img/enemy_20.png",
+    health: 20,
+    easySpawnRate: 2,
+    difficultSpawnRate: 60,
   },
 };
 
@@ -30,21 +54,27 @@ export class Enemy {
       this.y = Math.random() < 0.5 ? 0 - this.radius : canvasHeight + this.radius;
     }
 
-    const rand = Math.random();
+    const spawnWeights = {};
+    for (const [key, enemyData] of Object.entries(enemies)) {
+      const easy = enemyData.easySpawnRate;
+      const hard = enemyData.difficultSpawnRate;
+      spawnWeights[key] = easy * (1 - difficultyConstant) + hard * difficultyConstant;
+    }
 
-    const thresholds = {
-      enemy_5: 0.9 - difficultyConstant * 0.5,
-      enemy_3: 0.6 - difficultyConstant * 0.3,
-      enemy_1: 0,
-    };
+    const totalWeight = Object.values(spawnWeights).reduce((sum, val) => sum + val, 0);
+    for (let key in spawnWeights) {
+      spawnWeights[key] /= totalWeight;
+    }
 
-    let chosenType;
-    if (rand > thresholds.enemy_5) {
-      chosenType = "enemy_5";
-    } else if (rand > thresholds.enemy_3) {
-      chosenType = "enemy_3";
-    } else {
-      chosenType = "enemy_1";
+    let rand = Math.random();
+    let accum = 0;
+    let chosenType = "enemy_1";
+    for (const [type, weight] of Object.entries(spawnWeights)) {
+      accum += weight;
+      if (rand <= accum) {
+        chosenType = type;
+        break;
+      }
     }
 
     const enemyData = enemies[chosenType];
@@ -59,7 +89,7 @@ export class Enemy {
     this.maxHealth = this.health;
 
     const minSpeed = 2;
-    const maxSpeed = 3.5;
+    const maxSpeed = 5;
     this.speed = minSpeed + difficultyConstant * (maxSpeed - minSpeed);
   }
 
@@ -80,9 +110,7 @@ export class Enemy {
 
     this.context.strokeStyle = 'black';
     this.context.strokeRect(x, y, barWidth, barHeight);
-    
   }
-
 
   drawImg() {
     const imageTickLimit = 18;

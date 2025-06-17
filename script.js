@@ -89,9 +89,8 @@ function spawnEnemies() {
 
   if (spawnIntervalId) clearInterval(spawnIntervalId);
 
-  let spawnIntervalDuration = 1000 - (difficultyConstant / 100) * 900;
+  let spawnIntervalDuration = 1000 - difficultyConstant * 900;
   spawnIntervalDuration = Math.max(spawnIntervalDuration, 100);
-  console.log(spawnIntervalDuration);
 
   spawnIntervalId = setInterval(() => {
     spawnCountEnemies(countOfSpawnEnemies);
@@ -184,6 +183,9 @@ function checkHittingEnemy(enemy) {
       if (enemy.type === 'enemy_1') score += 100;
       else if (enemy.type === 'enemy_3') score += 300;
       else if (enemy.type === 'enemy_5') score += 500;
+      else if (enemy.type === 'enemy_7') score += 700;
+      else if (enemy.type === 'enemy_10') score += 1000;
+      else if (enemy.type === 'enemy_20') score += 2000;
 
       increaseScore(score);
       enemy.createExplosion(particles);
