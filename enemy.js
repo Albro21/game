@@ -4,37 +4,37 @@ import { sinBetweenTwoPoints, cosBetweenTwoPoints } from "./utilities.js";
 const enemies = {
   enemy_1: {
     imageSrc: "./img/enemy_1.png",
-    health: 1,
+    health: 10,
     easySpawnRate: 60,
     difficultSpawnRate: 2,
   },
   enemy_3: {
     imageSrc: "./img/enemy_3.png",
-    health: 3,
+    health: 30,
     easySpawnRate: 20,
     difficultSpawnRate: 3,
   },
   enemy_5: {
     imageSrc: "./img/enemy_5.png",
-    health: 5,
+    health: 50,
     easySpawnRate: 10,
     difficultSpawnRate: 5,
   },
   enemy_7: {
     imageSrc: "./img/enemy_7.png",
-    health: 7,
+    health: 70,
     easySpawnRate: 5,
     difficultSpawnRate: 10,
   },
   enemy_10: {
     imageSrc: "./img/enemy_10.png",
-    health: 10,
+    health: 100,
     easySpawnRate: 3,
     difficultSpawnRate: 20,
   },
   enemy_20: {
     imageSrc: "./img/enemy_20.png",
-    health: 20,
+    health: 200,
     easySpawnRate: 2,
     difficultSpawnRate: 60,
   },

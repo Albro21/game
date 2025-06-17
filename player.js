@@ -1,3 +1,5 @@
+import { FloatingNumber } from './floatingNumber.js';
+
 const MOVE_UP_KEY_CODES = ["ArrowUp", "KeyW"];
 const MOVE_DOWN_KEYS_CODES = ["ArrowDown", "KeyS"];
 const MOVE_LEFT_KEYS_CODES = ["ArrowLeft", "KeyA"];
@@ -5,7 +7,7 @@ const MOVE_RIGHT_KEYS_CODES = ["ArrowRight", "KeyD"];
 const ALL_MOVE_KEY_CODES = [...MOVE_UP_KEY_CODES, ...MOVE_DOWN_KEYS_CODES, ...MOVE_LEFT_KEYS_CODES, ...MOVE_RIGHT_KEYS_CODES];
 
 export class Player {
-  constructor(x, y, context, movementLimits, weapon=null) {
+  constructor(x, y, context, movementLimits, weapon=null, floatingNumbers=null) {
     this.radius = 15;
     this.velocity = 3;
 
@@ -46,6 +48,7 @@ export class Player {
     this.regen = 0;
     this._lastRegenTime = 0;
     this.healthStat = document.getElementById('healthStat');
+    this.floatingNumbers = floatingNumbers;
   }
 
   setWeapon(weapon) {
@@ -120,9 +123,10 @@ export class Player {
   regenerateHealth(currentTime = performance.now()) {
     if (this.regen > 0) {
       const deltaTime = (currentTime - this._lastRegenTime) / 1000;
-      if (deltaTime >= 1) {
+      if (deltaTime >= 1 && this.currentHealth < this.maxHealth) {
         this.currentHealth = Math.min(this.maxHealth, this.currentHealth + this.regen);
         this._lastRegenTime = currentTime;
+        this.floatingNumbers.push(new FloatingNumber(this.x, this.y, 1, 'heal', this.context));
       }
     }
   }
@@ -134,6 +138,13 @@ export class Player {
     this.checkPositionLimitAndUpdate();
     this.regenerateHealth();
     this.healthStat.innerText = this.currentHealth;
+    if (this.floatingNumbers){
+      this.floatingNumbers = this.floatingNumbers.filter(floatingNumber => floatingNumber.alpha > 0);
+      this.floatingNumbers.forEach(floatingNumber => {
+        floatingNumber.update();
+        floatingNumber.draw();
+      });
+    }
   }
 
   updatePosition() {

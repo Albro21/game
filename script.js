@@ -1,4 +1,5 @@
 import { Player } from "./player.js";
+import { FloatingNumber } from './floatingNumber.js';
 import { Enemy } from "./enemy.js";
 import { distanceBetweenTwoPoints } from "./utilities.js";
 import { Weapon } from "./weapon.js";
@@ -14,8 +15,9 @@ const gameOverScreen = document.getElementById('game-over-screen');
 
 let player;
 let upgradeSystem;
-let weapon = new Weapon(500, 1, 0, false, false);
+let weapon = new Weapon(500, 10, 0, false, false);
 const projectiles = [];
+let floatingNumbers = [];
 let enemies = [];
 let particles = [];
 let score = 0;
@@ -55,7 +57,7 @@ function init() {
     maxY: canvas.height,
   };
 
-  player = new Player(canvas.width / 2, canvas.height / 2, context, movementLimits, weapon);
+  player = new Player(canvas.width / 2, canvas.height / 2, context, movementLimits, weapon, floatingNumbers);
 
   window.addEventListener("mousedown", () => {
     player.shoot(null, null, context, projectiles);
@@ -109,16 +111,22 @@ function animate() {
   animationId = requestAnimationFrame(animate);
   context.clearRect(0, 0, canvas.width, canvas.height);
 
-  particles = particles.filter(particle => particle.alpha > 0);
+  particles = particles.filter(p => p.alpha > 0);
   projectiles.splice(0, projectiles.length, ...projectiles.filter(projectileInsideWindow));
-  enemies.forEach(enemy => checkHittingEnemy(enemy));
   enemies = enemies.filter(enemy => enemy.health > 0);
+  enemies.forEach(enemy => checkHittingEnemy(enemy));
   enemies.forEach((enemy, index) => checkHittingPlayer(enemy, index));
 
   particles.forEach(particle => particle.update());
   projectiles.forEach(projectile => projectile.update(enemies));
   player.update();
   enemies.forEach(enemy => enemy.update());
+
+  floatingNumbers = floatingNumbers.filter(floatingNumber => floatingNumber.alpha > 0);
+  floatingNumbers.forEach(floatingNumber => {
+    floatingNumber.update();
+    floatingNumber.draw();
+  });
 }
 
 function projectileInsideWindow(projectile) {
@@ -138,6 +146,7 @@ function checkHittingPlayer(enemy, index) {
     damageSound.play();
 
     player.currentHealth -= 25;
+    floatingNumbers.push(new FloatingNumber(player.x, player.y, 25, 'damage', context));
     enemies.splice(index, 1);
 
     if (player.currentHealth <= 0) {
@@ -171,6 +180,7 @@ function checkHittingEnemy(enemy) {
     damageSound.play();
 
     enemy.health -= player.weapon.damage;
+    floatingNumbers.push(new FloatingNumber(enemy.x, enemy.y, player.weapon.damage, 'damage', context));
 
     if (player.weapon.split) {
       projectile.split(projectiles);

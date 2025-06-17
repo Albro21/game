@@ -1,7 +1,7 @@
 import { Projectile } from "./projectile.js";
 
 class Weapon {
-    constructor(fireRate = 500, damage = 1, penetrate = 0, split = false, aimAssist = false) {
+    constructor(fireRate = 500, damage = 10, penetrate = 0, split = false, aimAssist = false) {
         this.fireRate = fireRate;
         this.damage = damage;
         this.penetrate = penetrate;

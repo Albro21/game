@@ -99,10 +99,11 @@ export class UpgradeSystem {
             this.movementSpeedStat.innerText = this.player.velocity;
         } else if (type === 'shotgun') {
             this.player.weapon.onMouseUp();
+            const damage = this.player.weapon.damage;
             const penetrate = Math.max(1, this.player.weapon.penetrate);
             const split = this.player.weapon.split;
             const aimAssist = this.player.weapon.aimAssist;
-            this.player.weapon = new ShotgunWeapon(1000, 1, penetrate, split, aimAssist);
+            this.player.weapon = new ShotgunWeapon(1000, damage, penetrate, split, aimAssist);
             this.fireRateStat.innerText = this.player.weapon.fireRate;
             this.damageStat.innerText = this.player.weapon.damage;
             this.penetrationStat.innerText = this.player.weapon.penetrate;
