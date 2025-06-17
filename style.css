@@ -9,6 +9,10 @@ body {
   font-family: 'Press Start 2P', monospace !important; 
 }
 
+#stats {
+  font-size: 10px;
+}
+
 .bg-wrap {
   position: fixed;
   z-index: -1;
