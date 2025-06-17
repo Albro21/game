@@ -23,6 +23,14 @@ let animationId;
 let countIntervalId;
 let spawnIntervalId;
 
+const gameOverGifs = [
+  'dance.gif',
+  'el-primo.gif',
+  'rat.gif',
+  'spongebob.gif',
+  'sunflower.gif',
+];
+
 let difficultyConstant = 0;
 const difficultyStat = document.getElementById('difficultyStat');
 
@@ -136,6 +144,10 @@ function checkHittingPlayer(enemy, index) {
     if (player.currentHealth <= 0) {
       const deathSound = new Audio('./sounds/death.mp3');
       deathSound.play();
+
+      const randomGif = gameOverGifs[Math.floor(Math.random() * gameOverGifs.length)];
+      const gifElement = document.getElementById('game-over-gif');
+      gifElement.src = `./img/game_over_gifs/${randomGif}`;
 
       gameOverScreen.classList.replace('d-none', 'd-flex');
       clearInterval(countIntervalId);
