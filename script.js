@@ -168,7 +168,7 @@ function checkHittingPlayer(enemy, index) {
 }
 
 function checkHittingEnemy(enemy) {
-  projectiles.some((projectile, index) => {
+  projectiles.forEach((projectile, index) => {
     if (projectile.hitEnemies.has(enemy)) return false;
 
     const distance = distanceBetweenTwoPoints(projectile.x, projectile.y, enemy.x, enemy.y);

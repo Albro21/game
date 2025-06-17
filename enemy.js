@@ -39,7 +39,7 @@ const enemies = {
     difficultSpawnRate: 55,
   },
   enemy_50: {
-    imageSrc: "./img/boss.png",
+    imageSrc: "./img/enemy_50.png",
     health: 500,
     easySpawnRate: 0.01,
     difficultSpawnRate: 5,
