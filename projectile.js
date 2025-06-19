@@ -1,7 +1,7 @@
 import { cosBetweenTwoPoints, sinBetweenTwoPoints } from "./utilities.js";
 
 export class Projectile {
-  constructor(x, y, targetX, targetY, context, canSplit = false, aimAssist = false) {
+  constructor(x, y, targetX, targetY, context, canSplit = false, superSplit = false, aimAssist = false) {
     this.x = x;
     this.y = y;
     this.context = context;
@@ -16,6 +16,7 @@ export class Projectile {
     this.hitEnemies = new Set();
 
     this.canSplit = canSplit;
+    this.superSplit = superSplit;
     this.aimAssist = aimAssist;
   }
 
@@ -66,13 +67,16 @@ export class Projectile {
         y: Math.sin(newAngle) * 15
       };
 
+      const canSplit = this.superSplit
+
       const newProjectile = new Projectile(
         this.x,
         this.y,
         this.x + newVelocity.x,
         this.y + newVelocity.y,
         this.context,
-        false
+        canSplit,
+        this.superSplit
       );
 
       newProjectile.velocity = newVelocity;

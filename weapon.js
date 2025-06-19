@@ -1,11 +1,12 @@
 import { Projectile } from "./projectile.js";
 
 class Weapon {
-    constructor(fireRate = 500, damage = 10, penetrate = 0, split = false, aimAssist = false, fireBullet = false) {
+    constructor(fireRate = 500, damage = 10, penetrate = 0, split = false, superSplit = false, aimAssist = false, fireBullet = false) {
         this.fireRate = fireRate;
         this.damage = damage;
         this.penetrate = penetrate;
         this.split = split;
+        this.superSplit = superSplit;
         this.aimAssist = aimAssist;
         this.fireBullet = fireBullet;
 
@@ -16,8 +17,7 @@ class Weapon {
     fire(player, targetX, targetY, context, projectiles) {
         const shootSound = new Audio('./sounds/shoot.mp3');
         shootSound.play();
-        
-        projectiles.push(new Projectile(player.x, player.y, targetX, targetY, context, this.split, this.aimAssist));
+        projectiles.push(new Projectile(player.x, player.y, targetX, targetY, context, this.split, this.superSplit, this.aimAssist));
     }
 
     shoot(player, targetX, targetY, context, projectiles) {
@@ -52,8 +52,8 @@ class Weapon {
 }
 
 class ShotgunWeapon extends Weapon {
-    constructor(fireRate = 1000, damage = 1, penetrate = 1, split = false, aimAssist = false, fireBullet = false) {
-        super(fireRate, damage, penetrate, split, aimAssist, fireBullet);
+    constructor(fireRate = 1000, damage = 1, penetrate = 1, split = false, superSplit = false, aimAssist = false, fireBullet = false) {
+        super(fireRate, damage, penetrate, split, superSplit, aimAssist, fireBullet);
     }
 
     fire(player, targetX, targetY, context, projectiles) {
@@ -72,7 +72,7 @@ class ShotgunWeapon extends Weapon {
             const spreadTargetX = player.x + dx * 100;
             const spreadTargetY = player.y + dy * 100;
 
-            projectiles.push(new Projectile(player.x, player.y, spreadTargetX, spreadTargetY, context, this.split, this.aimAssist));
+            projectiles.push(new Projectile(player.x, player.y, spreadTargetX, spreadTargetY, context, this.split, this.superSplit, this.aimAssist));
         }
     }
 }

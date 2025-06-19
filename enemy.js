@@ -99,6 +99,7 @@ export class Enemy {
     this.imageTick = 0;
     this.health = enemyData.health;
     this.maxHealth = this.health;
+    this._isDead = false;
     
     const minSpeed = 2;
     const maxSpeed = 4;
@@ -159,18 +160,22 @@ export class Enemy {
     this.drawHealthBar();
   }
 
-  burn(currentTime = performance.now()) {
+  burn(currentTime = performance.now(), { increaseScore, updateScore, particles } = {}) {
     if (this.fireDamage > 0) {
       const deltaTime = (currentTime - this._lastBurnTime) / 1000;
       if (deltaTime >= 1) {
         this.health -= this.fireDamage;
         this._lastBurnTime = currentTime;
         this.floatingNumbers.push(new FloatingNumber(this.x, this.y, this.fireDamage, 'damage', this.context));
+
+        if (this.health <= 0) {
+          this.die({ increaseScore, updateScore, particles });
+        }
       }
     }
   }
 
-  update() {
+  update({ increaseScore, updateScore, particles }) {
     this.draw();
     this.velocity = {
       x: cosBetweenTwoPoints(this.player.x, this.player.y, this.x, this.y) * this.speed,
@@ -180,7 +185,7 @@ export class Enemy {
     this.y += this.velocity.y;
 
     if (this.floatingNumbers) {
-      this.burn();
+      this.burn(performance.now(), { increaseScore, updateScore, particles });
       
       this.floatingNumbers = this.floatingNumbers.filter(floatingNumber => floatingNumber.alpha > 0);
       this.floatingNumbers.forEach(floatingNumber => {
@@ -188,6 +193,29 @@ export class Enemy {
         floatingNumber.draw();
       });
     }
+  }
+
+  die({ increaseScore, updateScore, particles }) {
+    if (this._isDead) return;
+    this._isDead = true;
+
+    const deathSound = new Audio('./sounds/death.mp3');
+    deathSound.play();
+
+    let scoreToAdd = 0;
+    switch (this.type) {
+      case 'enemy_1': scoreToAdd = 100; break;
+      case 'enemy_3': scoreToAdd = 300; break;
+      case 'enemy_5': scoreToAdd = 500; break;
+      case 'enemy_7': scoreToAdd = 700; break;
+      case 'enemy_10': scoreToAdd = 1000; break;
+      case 'enemy_20': scoreToAdd = 2000; break;
+      case 'enemy_50': scoreToAdd = 5000; break;
+    }
+
+    updateScore(scoreToAdd);
+    increaseScore();
+    this.createExplosion(particles);
   }
 
   createExplosion(particles) {

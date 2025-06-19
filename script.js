@@ -15,7 +15,7 @@ const gameOverScreen = document.getElementById('game-over-screen');
 
 let player;
 let upgradeSystem;
-let weapon = new Weapon(500, 10, 0, false, false, false);
+let weapon = new Weapon(500, 10, 0, false, false, false, false);
 const projectiles = [];
 let floatingNumbers = [];
 let enemies = [];
@@ -115,12 +115,17 @@ function animate() {
   projectiles.splice(0, projectiles.length, ...projectiles.filter(projectileInsideWindow));
   enemies = enemies.filter(enemy => enemy.health > 0);
   enemies.forEach(enemy => checkHittingEnemy(enemy));
+  enemies = enemies.filter(enemy => !enemy._isDead);
   enemies.forEach((enemy, index) => checkHittingPlayer(enemy, index));
 
   particles.forEach(particle => particle.update());
   projectiles.forEach(projectile => projectile.update(enemies));
   player.update();
-  enemies.forEach(enemy => enemy.update());
+  enemies.forEach(enemy => enemy.update({
+    increaseScore: () => increaseScore(score),
+    updateScore: (points) => { score += points },
+    particles: particles
+  }));
 
   floatingNumbers = floatingNumbers.filter(floatingNumber => floatingNumber.alpha > 0);
   floatingNumbers.forEach(floatingNumber => {
@@ -190,30 +195,22 @@ function checkHittingEnemy(enemy) {
       projectile.split(projectiles);
     }
 
-    if (enemy.health <= 0) {
-      const deathSound = new Audio('./sounds/death.mp3');
-      deathSound.play();
-
-      if (enemy.type === 'enemy_1') score += 100;
-      else if (enemy.type === 'enemy_3') score += 300;
-      else if (enemy.type === 'enemy_5') score += 500;
-      else if (enemy.type === 'enemy_7') score += 700;
-      else if (enemy.type === 'enemy_10') score += 1000;
-      else if (enemy.type === 'enemy_20') score += 2000;
-      else if (enemy.type === 'enemy_50') score += 5000;
-
-      increaseScore(score);
-      enemy.createExplosion(particles);
-    }
-
+    
     if (projectile.enemiesPenetrated < player.weapon.penetrate) {
       projectile.enemiesPenetrated++;
     } else {
       removeProjectileByIndex(index);
     }
-
-    return true;
   });
+
+  if (enemy.health <= 0) {
+    enemy.die({
+      updateScore: (points) => { score += points },
+      increaseScore: () => increaseScore(score),
+      particles: particles
+    });
+  }
+  return true;
 }
 
 function removeProjectileByIndex(index) {

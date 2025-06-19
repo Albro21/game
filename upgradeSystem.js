@@ -122,6 +122,11 @@ export class UpgradeSystem {
             if (this.player.weapon instanceof ShotgunWeapon) return;
             this.player.weapon.split = true;
             delete upgrades['split'];
+            upgrades['superSplit'] = '👫 Bullets split recursively';
+        } else if (type === 'split') {
+            if (this.player.weapon instanceof ShotgunWeapon) return;
+            this.player.weapon.superSplit = true;
+            delete upgrades['superSplit'];
         } else if (type === 'aimAssist') {
             this.player.weapon.aimAssist = true;
             delete upgrades['aimAssist'];
