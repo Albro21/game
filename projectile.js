@@ -1,7 +1,7 @@
 import { cosBetweenTwoPoints, sinBetweenTwoPoints } from "./utilities.js";
 
 export class Projectile {
-  constructor(x, y, targetX, targetY, context, aimAssist = false) {
+  constructor(x, y, targetX, targetY, context, canSplit = false, aimAssist = false) {
     this.x = x;
     this.y = y;
     this.context = context;
@@ -15,6 +15,7 @@ export class Projectile {
     this.enemiesPenetrated = 0;
     this.hitEnemies = new Set();
 
+    this.canSplit = canSplit;
     this.aimAssist = aimAssist;
   }
 
@@ -54,7 +55,7 @@ export class Projectile {
   }
 
   split(projectilesArray) {
-    const angleOffset = Math.PI / 2;
+    const angleOffset = Math.PI / 12;
     const angle = Math.atan2(this.velocity.y, this.velocity.x);
 
     for (const offset of [-angleOffset, angleOffset]) {

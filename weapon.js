@@ -17,7 +17,7 @@ class Weapon {
         const shootSound = new Audio('./sounds/shoot.mp3');
         shootSound.play();
         
-        projectiles.push(new Projectile(player.x, player.y, targetX, targetY, context, this.aimAssist));
+        projectiles.push(new Projectile(player.x, player.y, targetX, targetY, context, this.split, this.aimAssist));
     }
 
     shoot(player, targetX, targetY, context, projectiles) {
@@ -72,7 +72,7 @@ class ShotgunWeapon extends Weapon {
             const spreadTargetX = player.x + dx * 100;
             const spreadTargetY = player.y + dy * 100;
 
-            projectiles.push(new Projectile(player.x, player.y, spreadTargetX, spreadTargetY, context, this.aimAssist));
+            projectiles.push(new Projectile(player.x, player.y, spreadTargetX, spreadTargetY, context, this.split, this.aimAssist));
         }
     }
 }

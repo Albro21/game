@@ -5,7 +5,7 @@ const upgrades = {
     damage: '💥 2X More Damage',
     heal: '💖 Restore Health',
     movementSpeed: '🏃 Double Movement Speed',
-    shotgun: '🔫 Shotgun Mode: 6 Bullets, 1s Fire Rate',
+    shotgun: '🔫 Shotgun Mode: 6 Bullets, 1s Fire Rate, Bullets cannot split!',
     penetration: '🛡️ Bullets Penetrate +1 Enemy',
     regen: '🌱 Regen +1',
     maxHealth: '❤️ 2X Max Health',
@@ -102,10 +102,9 @@ export class UpgradeSystem {
             this.player.weapon.onMouseUp();
             const damage = this.player.weapon.damage;
             const penetrate = Math.max(1, this.player.weapon.penetrate);
-            const split = this.player.weapon.split;
             const aimAssist = this.player.weapon.aimAssist;
             const fireBullet = this.player.weapon.fireBullet;
-            this.player.weapon = new ShotgunWeapon(1000, damage, penetrate, split, aimAssist, fireBullet);
+            this.player.weapon = new ShotgunWeapon(1000, damage, penetrate, false, aimAssist, fireBullet);
             this.fireRateStat.innerText = this.player.weapon.fireRate;
             this.damageStat.innerText = this.player.weapon.damage;
             this.penetrationStat.innerText = this.player.weapon.penetrate;
@@ -120,6 +119,7 @@ export class UpgradeSystem {
             this.player.maxHealth *= 2;
             this.maxHealthStat.innerText = this.player.maxHealth;
         } else if (type === 'split') {
+            if (this.player.weapon instanceof ShotgunWeapon) return;
             this.player.weapon.split = true;
             delete upgrades['split'];
         } else if (type === 'aimAssist') {

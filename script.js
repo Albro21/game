@@ -15,7 +15,7 @@ const gameOverScreen = document.getElementById('game-over-screen');
 
 let player;
 let upgradeSystem;
-let weapon = new Weapon(500, 10, 0, false, false, true);
+let weapon = new Weapon(500, 10, 0, false, false, false);
 const projectiles = [];
 let floatingNumbers = [];
 let enemies = [];
@@ -186,7 +186,7 @@ function checkHittingEnemy(enemy) {
     enemy.health -= player.weapon.damage;
     floatingNumbers.push(new FloatingNumber(enemy.x, enemy.y, player.weapon.damage, 'damage', context));
 
-    if (player.weapon.split) {
+    if (projectile.canSplit) {
       projectile.split(projectiles);
     }
 
