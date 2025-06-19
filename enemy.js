@@ -7,30 +7,36 @@ const enemies = {
     imageSrc: "./img/enemy_1.png",
     health: 10,
     easySpawnRate: 60,
-    difficultSpawnRate: 1,
+    difficultSpawnRate: 0.01,
   },
   enemy_3: {
     imageSrc: "./img/enemy_3.png",
     health: 30,
     easySpawnRate: 20,
-    difficultSpawnRate: 1,
+    difficultSpawnRate: 0.1,
+  },
+  enemy_4: {
+    imageSrc: "./img/enemy_4.png",
+    health: 30,
+    easySpawnRate: 10,
+    difficultSpawnRate: 2,
   },
   enemy_5: {
     imageSrc: "./img/enemy_5.png",
     health: 50,
-    easySpawnRate: 10,
+    easySpawnRate: 5,
     difficultSpawnRate: 3,
   },
   enemy_7: {
     imageSrc: "./img/enemy_7.png",
     health: 70,
-    easySpawnRate: 5,
+    easySpawnRate: 3,
     difficultSpawnRate: 5,
   },
   enemy_10: {
     imageSrc: "./img/enemy_10.png",
     health: 100,
-    easySpawnRate: 3,
+    easySpawnRate: 2,
     difficultSpawnRate: 10,
   },
   enemy_20: {
@@ -206,6 +212,7 @@ export class Enemy {
     switch (this.type) {
       case 'enemy_1': scoreToAdd = 100; break;
       case 'enemy_3': scoreToAdd = 300; break;
+      case 'enemy_4': scoreToAdd = 400; break;
       case 'enemy_5': scoreToAdd = 500; break;
       case 'enemy_7': scoreToAdd = 700; break;
       case 'enemy_10': scoreToAdd = 1000; break;

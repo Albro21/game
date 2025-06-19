@@ -109,6 +109,7 @@ export class UpgradeSystem {
             this.damageStat.innerText = this.player.weapon.damage;
             this.penetrationStat.innerText = this.player.weapon.penetrate;
             delete upgrades['shotgun'];
+            delete upgrades['split'];
         } else if (type === 'penetration') {
             this.player.weapon.penetrate += 1;
             this.penetrationStat.innerText = this.player.weapon.penetrate;
@@ -123,7 +124,7 @@ export class UpgradeSystem {
             this.player.weapon.split = true;
             delete upgrades['split'];
             upgrades['superSplit'] = '👫 Bullets split recursively';
-        } else if (type === 'split') {
+        } else if (type === 'superSplit') {
             if (this.player.weapon instanceof ShotgunWeapon) return;
             this.player.weapon.superSplit = true;
             delete upgrades['superSplit'];

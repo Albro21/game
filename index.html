@@ -4,8 +4,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Latvia simulator</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Game</title>
 	<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 	<link type="Image/x-icon" href="./favicon.ico" rel="icon">
 	<link href="./style.css" rel="stylesheet" type="text/css">
@@ -24,47 +24,56 @@
 	<div id="ui" style="position: fixed; top: 0; left: 0; z-index: 1; height: 100vh; width: 100vw;">
 
 		<!-- Progress Bar -->
-		<div class="d-flex flex-column align-items-center justify-content-center w-100 gap-3" style="position: absolute; top: 30px;">
-			<div class="progress shadow border border-warning" role="progressbar" 
-				aria-valuenow="0" 
-				aria-valuemin="0" 
-				aria-valuemax="5000"
-				style="width: 40%; height: 30px;">
-				<div id="score-progress" class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 0%">0%</div>
+		<div class="d-flex flex-column align-items-center justify-content-center w-100 gap-3"
+			style="position: absolute; top: 30px;">
+			<div class="progress shadow border border-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+				aria-valuemax="5000" style="width: 40%; height: 30px;">
+				<div id="score-progress" class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+					style="width: 0%">0%</div>
 			</div>
 			<h3 class="text-warning">Score:<span id="score">0</span></h3>
 		</div>
 
 		<!-- Game Over Screen -->
-		<div class="d-none flex-column w-100 h-100 align-items-center justify-content-center" id="game-over-screen" onclick="location.reload()">
+		<div class="d-none flex-column w-100 h-100 align-items-center justify-content-center" id="game-over-screen"
+			onclick="location.reload()">
 			<img src="" height="250" width="250" id="game-over-gif">
 			<img src="./img/wasted.png">
-			<div class="btn btn-primary mt-4 p-4"><h1>Play Again</h1></div>
+			<div class="btn btn-primary mt-4 p-4">
+				<h1>Play Again</h1>
+			</div>
 		</div>
 
 		<!-- Start Game Button -->
 		<div class="d-flex w-100 h-100 align-items-center justify-content-center">
-			<button class="btn btn-primary p-5" id="start-btn"><h1>Start Game</h1></button>
+			<button class="btn btn-primary p-5" id="start-btn">
+				<h1>Start Game</h1>
+			</button>
 		</div>
 
 		<!-- Upgrade Overlay -->
-		<div id="upgrade-overlay" class="d-none w-100 h-100 flex-column align-items-center justify-content-center" style="position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.8); color: white; gap: 20px; z-index: 2;">
+		<div id="upgrade-overlay" class="d-none w-100 h-100 flex-column align-items-center justify-content-center"
+			style="position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.8); color: white; gap: 20px; z-index: 2;">
 			<h1>Choose an Upgrade</h1>
 			<div class="row">
 				<div class="col">
-					<button class="btn btn-light w-100 overlay-btn" style="height: 300px" data-upgrade="fireRate">🔥 X2 Fire Rate</button>
+					<button class="btn btn-light w-100 overlay-btn" style="height: 300px" data-upgrade="fireRate">🔥 X2
+						Fire Rate</button>
 				</div>
 				<div class="col">
-					<button class="btn btn-light w-100 overlay-btn" style="height: 300px" data-upgrade="damage">💥 X1.5 More Damage</button>
+					<button class="btn btn-light w-100 overlay-btn" style="height: 300px" data-upgrade="damage">💥 X1.5
+						More Damage</button>
 				</div>
 				<div class="col">
-					<button class="btn btn-light w-100 overlay-btn" style="height: 300px" data-upgrade="heal">💖 Heal</button>
+					<button class="btn btn-light w-100 overlay-btn" style="height: 300px" data-upgrade="heal">💖
+						Heal</button>
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- Stats -->
-		<div class="d-flex flex-column rounded bg-light p-2 opacity-50" id="stats" style="position: absolute; top: 20px; right: 20px;">
+		<div class="d-flex flex-column rounded bg-light p-2 opacity-50" id="stats"
+			style="position: absolute; top: 20px; right: 20px;">
 			<div>Health: <span id="healthStat">100</span>/<span id="maxHealthStat">100</span></div>
 			<div>Regen: <span id="regenStat">0</span></div>
 			<div>Fire Rate: <span id="fireRateStat">500</span></div>
@@ -74,6 +83,31 @@
 			<div class="text-danger">Difficulty: <span id="difficultyStat">0</span>%</div>
 		</div>
 	</div>
+
+	<script>
+		// Prevent zoom with Ctrl + MouseWheel
+		window.addEventListener('wheel', function (e) {
+			if (e.ctrlKey) {
+				e.preventDefault();
+			}
+		}, { passive: false });
+
+		// Prevent zoom with Ctrl + + / Ctrl + -
+		window.addEventListener('keydown', function (e) {
+			if (
+				(e.ctrlKey || e.metaKey) &&
+				(e.key === '+' || e.key === '-' || e.key === '=' || e.key === '_' || e.key === 'Add' || e.key === 'Subtract')
+			) {
+				e.preventDefault();
+			}
+
+			// Optional: Block zoom using numeric pad too
+			if (e.ctrlKey && (e.keyCode === 107 || e.keyCode === 109)) {
+				e.preventDefault();
+			}
+		});
+	</script>
+
 </body>
 
 </html>
