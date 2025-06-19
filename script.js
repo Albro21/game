@@ -15,7 +15,7 @@ const gameOverScreen = document.getElementById('game-over-screen');
 
 let player;
 let upgradeSystem;
-let weapon = new Weapon(500, 10, 0, false, false);
+let weapon = new Weapon(500, 10, 0, false, false, true);
 const projectiles = [];
 let floatingNumbers = [];
 let enemies = [];
@@ -91,8 +91,8 @@ function spawnEnemies() {
 
   if (spawnIntervalId) clearInterval(spawnIntervalId);
 
-  let spawnIntervalDuration = 1000 - difficultyConstant * 900;
-  spawnIntervalDuration = Math.max(spawnIntervalDuration, 100);
+  let spawnIntervalDuration = 1000 - difficultyConstant * 800;
+  spawnIntervalDuration = Math.max(spawnIntervalDuration, 200);
 
   spawnIntervalId = setInterval(() => {
     spawnCountEnemies(countOfSpawnEnemies);
@@ -103,7 +103,7 @@ function spawnEnemies() {
 
 function spawnCountEnemies(count) {
   for (let i = 0; i < count; i++) {
-    enemies.push(new Enemy(canvas.width, canvas.height, context, player, difficultyConstant));
+    enemies.push(new Enemy(canvas.width, canvas.height, context, player, difficultyConstant, floatingNumbers));
   }
 }
 
@@ -175,6 +175,10 @@ function checkHittingEnemy(enemy) {
     if (distance - enemy.radius - projectile.radius > 0) return false;
 
     projectile.hitEnemies.add(enemy);
+
+    if (player.weapon.fireBullet) {
+      enemy.setOnFire();
+    }
 
     const damageSound = new Audio('./sounds/damage.mp3');
     damageSound.play();

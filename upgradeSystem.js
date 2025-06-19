@@ -10,7 +10,8 @@ const upgrades = {
     regen: '🌱 Regen +1',
     maxHealth: '❤️ 2X Max Health',
     split: '👫 Bullets split on hit',
-    aimAssist: '🎯 Aim Assist'
+    aimAssist: '🎯 Aim Assist',
+    fire: '🔥 Set enemies on fire'
 };
 
 export class UpgradeSystem {
@@ -77,7 +78,7 @@ export class UpgradeSystem {
     checkForUpgrade(score) {
         if (score >= this.nextUpgradeAt) {
             this.previousUpgradeAt = this.nextUpgradeAt;
-            this.nextUpgradeAt = this.nextUpgradeAt + this.nextUpgradeAt * 1.5;
+            this.nextUpgradeAt = this.nextUpgradeAt + this.nextUpgradeAt * 1.25;
             this.showOverlay();
             return true;
         }
@@ -103,7 +104,8 @@ export class UpgradeSystem {
             const penetrate = Math.max(1, this.player.weapon.penetrate);
             const split = this.player.weapon.split;
             const aimAssist = this.player.weapon.aimAssist;
-            this.player.weapon = new ShotgunWeapon(1000, damage, penetrate, split, aimAssist);
+            const fireBullet = this.player.weapon.fireBullet;
+            this.player.weapon = new ShotgunWeapon(1000, damage, penetrate, split, aimAssist, fireBullet);
             this.fireRateStat.innerText = this.player.weapon.fireRate;
             this.damageStat.innerText = this.player.weapon.damage;
             this.penetrationStat.innerText = this.player.weapon.penetrate;
@@ -123,6 +125,9 @@ export class UpgradeSystem {
         } else if (type === 'aimAssist') {
             this.player.weapon.aimAssist = true;
             delete upgrades['aimAssist'];
+        } else if (type === 'fire') {
+            this.player.weapon.fireBullet = true;
+            delete upgrades['fire'];
         }
     }
 }

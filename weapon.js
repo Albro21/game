@@ -1,12 +1,13 @@
 import { Projectile } from "./projectile.js";
 
 class Weapon {
-    constructor(fireRate = 500, damage = 10, penetrate = 0, split = false, aimAssist = false) {
+    constructor(fireRate = 500, damage = 10, penetrate = 0, split = false, aimAssist = false, fireBullet = false) {
         this.fireRate = fireRate;
         this.damage = damage;
         this.penetrate = penetrate;
         this.split = split;
         this.aimAssist = aimAssist;
+        this.fireBullet = fireBullet;
 
         this.holdInterval = null;
         this.canShoot = true;
@@ -51,8 +52,8 @@ class Weapon {
 }
 
 class ShotgunWeapon extends Weapon {
-    constructor(fireRate = 1000, damage = 1, penetrate = 1, split = false, aimAssist = false) {
-        super(fireRate, damage, penetrate, split, aimAssist);
+    constructor(fireRate = 1000, damage = 1, penetrate = 1, split = false, aimAssist = false, fireBullet = false) {
+        super(fireRate, damage, penetrate, split, aimAssist, fireBullet);
     }
 
     fire(player, targetX, targetY, context, projectiles) {

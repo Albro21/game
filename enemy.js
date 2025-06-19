@@ -1,4 +1,5 @@
 import { Particle } from "./particle.js";
+import { FloatingNumber } from "./floatingNumber.js";
 import { sinBetweenTwoPoints, cosBetweenTwoPoints } from "./utilities.js";
 
 const enemies = {
@@ -47,7 +48,7 @@ const enemies = {
 };
 
 export class Enemy {
-  constructor(canvasWidth, canvasHeight, context, player, difficultyConstant = 0) {
+  constructor(canvasWidth, canvasHeight, context, player, difficultyConstant = 0, floatingNumbers) {
     this.context = context;
     this.player = player;
 
@@ -82,7 +83,7 @@ export class Enemy {
         break;
       }
     }
-
+    
     const enemyData = enemies[chosenType];
     this.type = chosenType;
     this.image = new Image();
@@ -98,10 +99,14 @@ export class Enemy {
     this.imageTick = 0;
     this.health = enemyData.health;
     this.maxHealth = this.health;
-
+    
     const minSpeed = 2;
     const maxSpeed = 4;
     this.speed = minSpeed + difficultyConstant * (maxSpeed - minSpeed);
+    
+    this.fireDamage = 0;
+    this._lastBurnTime = performance.now();
+    this.floatingNumbers = floatingNumbers;
   }
 
   drawHealthBar() {
@@ -154,6 +159,17 @@ export class Enemy {
     this.drawHealthBar();
   }
 
+  burn(currentTime = performance.now()) {
+    if (this.fireDamage > 0) {
+      const deltaTime = (currentTime - this._lastBurnTime) / 1000;
+      if (deltaTime >= 1) {
+        this.health -= this.fireDamage;
+        this._lastBurnTime = currentTime;
+        this.floatingNumbers.push(new FloatingNumber(this.x, this.y, this.fireDamage, 'damage', this.context));
+      }
+    }
+  }
+
   update() {
     this.draw();
     this.velocity = {
@@ -162,6 +178,16 @@ export class Enemy {
     };
     this.x += this.velocity.x;
     this.y += this.velocity.y;
+
+    if (this.floatingNumbers) {
+      this.burn();
+      
+      this.floatingNumbers = this.floatingNumbers.filter(floatingNumber => floatingNumber.alpha > 0);
+      this.floatingNumbers.forEach(floatingNumber => {
+        floatingNumber.update();
+        floatingNumber.draw();
+      });
+    }
   }
 
   createExplosion(particles) {
@@ -172,5 +198,9 @@ export class Enemy {
         this.context
       ))
     }
+  }
+
+  setOnFire() {
+    this.fireDamage += 5;
   }
 }
