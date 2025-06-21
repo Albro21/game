@@ -1,5 +1,7 @@
 # Rogue Shooter (Based on GTA2 by YuraKoch)
 
+![Gameplay Demo](./img/assets/gameplay-demo.gif)
+
 This is a school project based on the [GTA2 browser game by YuraKoch](https://github.com/YuraKoch/gta2). The original version featured two types of enemies and a simple shooting mechanic to increase your score.
 
 I chose this game as the foundation for my project because it offered a solid starting point with potential for deep improvements. My goal was to turn it into a **roguelike shooter** with rich gameplay mechanics, player progression, and a challenging difficulty curve.
@@ -70,6 +72,7 @@ A global `difficultyConstant` increases by **+0.1** with every upgrade, dynamica
 - **Start Game** and **Play Again** buttons
 - **Improved Game Over screen** with random GIFs ("because the music hits hard XD")
 - **Disabled browser zoom scaling** to prevent exploits
+- **New background design**: the left side of the screen now looks like **hell**, gradually transitioning into the **real world**
 
 ---
 
